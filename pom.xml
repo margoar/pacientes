@@ -5,7 +5,7 @@
     <artifactId>ManejoPacientes</artifactId>
     <version>1.0</version>
     <packaging>war</packaging>
-    <name>ManejoPacientes-1.0</name>
+    <name>ManejoPacientes</name>
     
     <properties>
         <maven.compiler.source>1.8</maven.compiler.source>
@@ -23,9 +23,21 @@
             <version>${jakartaee}</version>
             <scope>provided</scope>
         </dependency>
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-dbcp2</artifactId>
+            <version>2.7.0</version>
+        </dependency>
+        <dependency>
+            <groupId>javax</groupId>
+            <artifactId>javaee-api</artifactId>
+            <version>${jakartaee}</version>
+            <scope>provided</scope>
+        </dependency>
+        
     </dependencies>
     
-     <build>
+    <build>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
