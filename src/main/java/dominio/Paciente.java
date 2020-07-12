@@ -14,6 +14,10 @@ public class Paciente {
     public Paciente() {
     }
 
+    public Paciente(int idPaciente) {
+        this.idPaciente = idPaciente;
+    }
+
     public Paciente(int idPaciente, String rut, String nombre, String apellido, int edad, boolean estadoCovid, Date fechaContagio) {
         this.idPaciente = idPaciente;
         this.rut = rut;

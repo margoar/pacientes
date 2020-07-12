@@ -15,21 +15,23 @@
                                 <th>#</th>
                                 <th>Rut</th>
                                 <th>Nombre</th>
+                                <th>Estado</th>
                                 <th>Acciones</th>
                             </tr>
                         </thead>
                         <tbody>
                             <c:forEach var="paciente" items="${pacientes}" varStatus="status">
-                                <tr>
+                                <tr class="${paciente.estadoCovid ? "table-danger" : "table-success"}">
                                     <td>${status.count}</td>
                                     <td> ${paciente.rut}</td>
                                     <td> ${paciente.nombre} ${paciente.apellido}</td>
+                                    <td >${paciente.estadoCovid ? "Contagiado" : "Sano"}</td>
                                     <td>
 
-                                        <a href="${pageContext.request.contextPath}/ServletControlador?accion=editar&idCliente=${cliente.idCliente}"
+                                        <a href="${pageContext.request.contextPath}/ServletControlador?accion=editar&idPaciente=${paciente.idPaciente}"
                                            class="btn btn-secondary"> <i class="fa fa-pencil-square-o"></i> </a>
 
-                                        <a href="${pageContext.request.contextPath}/ServletControlador?accion=eliminar&idCliente=${cliente.idCliente}"
+                                        <a href="${pageContext.request.contextPath}/ServletControlador?accion=eliminar&idPaciente=${paciente.idPaciente}"
                                            class="btn btn-danger"> <i class="fa fa-trash"></i> </a>
                                     </td>
                                 </tr>
@@ -44,7 +46,7 @@
                     <div class="card-body">
                         <h3>Total Pacientes </h3>
                         <h4 class="display-4">
-                            <i class="fas fa-users"></i> 4
+                            <i class="fas fa-users"></i> ${cantPacientes}
                         </h4>
                     </div>
                 </div>
@@ -53,7 +55,7 @@
                     <div class="card-body">
                         <h3> Sanos</h3>
                         <h4 class="display-4">
-                            <i class="fas fa-heart"></i>  3
+                            <i class="fas fa-heart"></i> ${cantSanos}
                         </h4>
                     </div>
                 </div>   
@@ -62,7 +64,7 @@
                     <div class="card-body">
                         <h3> Contagiados</h3>
                         <h4 class="display-4">
-                            <i class="fas fa-virus"></i> 4
+                            <i class="fas fa-virus"></i> ${cantContagiados}
                         </h4>
                     </div>
                 </div> 
@@ -71,6 +73,7 @@
 
         </div>
     </div>
-
-
 </section>
+
+<!--Agregar cliente modal -->
+<jsp:include page="/WEB-INF/paginas/paciente/agregarPaciente.jsp"/>
