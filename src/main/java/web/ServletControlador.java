@@ -1,14 +1,20 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package web;
 
-/**
- *
- * @author marcela
- */
-public class ServletControlador {
+import java.io.IOException;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.*;
+
+
+@WebServlet("/ServletControlador")
+public class ServletControlador extends HttpServlet{
     
+    
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws  ServletException,IOException{
+   
+            //url no cambia 
+            request.getRequestDispatcher("pacientes.jsp").forward(request, response);
+    
+    }
 }
