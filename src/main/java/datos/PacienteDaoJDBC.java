@@ -11,11 +11,11 @@ import java.util.List;
 
 public class PacienteDaoJDBC {
 
-    private static final String SQL_SELECT = "SELECT * FROM control_pacientes";
-    private static final String SQL_SELECT_BY_ID = "SELECT * FROM control_pacientes";
-    private static final String SQL_INSERT = "SELECT * FROM control_pacientes";
-    private static final String SQL_UPDATE = "SELECT * FROM control_pacientes";
-    private static final String SQL_DELETE = "DELETE FROM control_pacientes WHERE id_paciente = ?";
+    private static final String SQL_SELECT = "SELECT id_paciente,rut,nombre,apellido,edad,estadoCovid,fechaContagio FROM paciente";
+    private static final String SQL_SELECT_BY_ID = "SELECT * FROM paciente";
+    private static final String SQL_INSERT = "SELECT * FROM paciente";
+    private static final String SQL_UPDATE = "SELECT * FROM paciente";
+    private static final String SQL_DELETE = "DELETE FROM paciente WHERE id_paciente = ?";
 
     public List<Paciente> listar() {
         Connection conn = null;
