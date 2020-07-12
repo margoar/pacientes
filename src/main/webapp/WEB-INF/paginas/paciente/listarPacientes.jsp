@@ -71,6 +71,7 @@
 
         </div>
     </div>
-
-
 </section>
+
+<!--Agregar cliente modal -->
+<jsp:include page="/WEB-INF/paginas/paciente/agregarPaciente.jsp"/>

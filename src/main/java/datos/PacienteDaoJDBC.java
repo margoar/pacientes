@@ -13,7 +13,8 @@ public class PacienteDaoJDBC {
 
     private static final String SQL_SELECT = "SELECT id_paciente,rut,nombre,apellido,edad,estadoCovid,fechaContagio FROM paciente";
     private static final String SQL_SELECT_BY_ID = "SELECT * FROM paciente";
-    private static final String SQL_INSERT = "SELECT * FROM paciente";
+    private static final String SQL_INSERT = "INSERT INTO paciente (rut,nombre,apellido,edad,estadoCovid,fechaContagio) " + 
+                                            " VALUES (?,?,?,?,?,?)";
     private static final String SQL_UPDATE = "SELECT * FROM paciente";
     private static final String SQL_DELETE = "DELETE FROM paciente WHERE id_paciente = ?";
 
@@ -54,4 +55,29 @@ public class PacienteDaoJDBC {
         }
         return pacientes;
     }
+    
+    public int insertar(Paciente paciente){
+        Connection conn = null;
+        PreparedStatement stmt = null;
+        int rows = 0;
+        try {
+            conn = Conexion.getConnection();
+            stmt = conn.prepareStatement(SQL_INSERT);
+            
+            stmt.setString(1, paciente.getRut());
+            stmt.setString(2, paciente.getNombre());
+            stmt.setString(3, paciente.getApellido());
+            stmt.setInt(4, paciente.getEdad());
+            stmt.setBoolean(5, paciente.isEstadoCovid());
+            stmt.setDate(6, (java.sql.Date) paciente.getFechaContagio());
+            rows = stmt.executeUpdate();
+            
+        } catch (SQLException ex) {
+            ex.printStackTrace(System.out);
+        }finally{}
+        
+        return rows;
+    
+    
+    } 
 }
