@@ -22,6 +22,9 @@ public class ServletControlador extends HttpServlet {
             switch (accion) {
                 case "editar":
                     break;
+                case "eliminar":
+                    this.eliminarCliente(request, response);
+                    break;
                 default:
                     this.accionDefault(request, response);
             }
@@ -39,6 +42,11 @@ public class ServletControlador extends HttpServlet {
         List<Paciente> pacientes = new PacienteDaoJDBC().listar();
         HttpSession sesion = request.getSession();
         sesion.setAttribute("pacientes", pacientes);
+        //pacientes sanos
+        int cantSanos = cantPacientesSano(pacientes);
+        sesion.setAttribute("cantPacientes", pacientes.size());
+        sesion.setAttribute("cantSanos", cantSanos);
+        sesion.setAttribute("cantContagiados", (int) (pacientes.size() - cantSanos));
         response.sendRedirect("pacientes.jsp");
 
     }
@@ -71,11 +79,38 @@ public class ServletControlador extends HttpServlet {
         String apellido = request.getParameter("apellido");
         String rut = request.getParameter("rut");
         int edad = Integer.parseInt(request.getParameter("edad"));
+        boolean estadoCovid = Boolean.parseBoolean(request.getParameter("estadoCovid"));
 
-        Paciente paciente = new Paciente(rut, nombre, apellido, edad, false, null);
+        Paciente paciente = new Paciente(rut, nombre, apellido, edad, estadoCovid, null);
         int registroAgregado = new PacienteDaoJDBC().insertar(paciente);
 
-        System.out.println("registro insertado:" +registroAgregado);
+        System.out.println("registro insertado:" + registroAgregado);
         this.accionDefault(request, response);
+    }
+
+    private int cantPacientesSano(List<Paciente> pacientes) {
+        int cantSanos = 0;
+        inicio:
+        for (Paciente pac : pacientes) {
+            if (!pac.isEstadoCovid()) {
+                cantSanos++;
+                continue inicio;
+
+            }
+            System.out.println("pacientes sanos: " + cantSanos);
+        }
+
+        return cantSanos;
+    }
+
+    private void eliminarCliente(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        int idPaciente = Integer.parseInt(request.getParameter("idPaciente"));
+
+        Paciente paciente = new Paciente(idPaciente);
+
+        int registroEliminado = new PacienteDaoJDBC().eliminar(paciente);
+        System.out.println("registros eliminados" + registroEliminado);
+        this.accionDefault(request, response);
+
     }
 }

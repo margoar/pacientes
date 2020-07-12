@@ -38,13 +38,13 @@
                             <legend class="col-form-label col-sm-2 pt-0">¿Contagiado?</legend>
                             <div class="col-sm-10">
                                 <div class="form-check">
-                                    <input class="form-check-input" type="radio" name="estadoCovid" value="1" checked>
+                                    <input class="form-check-input" type="radio" name="estadoCovid" value="true" checked>
                                     <label class="form-check-label" for="covidTrue">
                                         Sí
                                     </label>
                                 </div>
                                 <div class="form-check">
-                                    <input class="form-check-input" type="radio" name="estacoCovid"  value="0">
+                                    <input class="form-check-input" type="radio" name="estadoCovid"  value="false">
                                     <label class="form-check-label" for="covidFalse">
                                         No
                                     </label>
