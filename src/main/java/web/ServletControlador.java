@@ -3,7 +3,12 @@ package web;
 import datos.PacienteDaoJDBC;
 import dominio.Paciente;
 import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
@@ -80,8 +85,16 @@ public class ServletControlador extends HttpServlet {
         String rut = request.getParameter("rut");
         int edad = Integer.parseInt(request.getParameter("edad"));
         boolean estadoCovid = Boolean.parseBoolean(request.getParameter("estadoCovid"));
+        
+        String formatFecha = request.getParameter("fechaContagio");
+        Date fechaContagio = null;
+        try {
+            fechaContagio = new SimpleDateFormat("dd/MM/yyyy").parse(formatFecha);
+        } catch (ParseException ex) {
+           ex.printStackTrace(System.out);
+        }
 
-        Paciente paciente = new Paciente(rut, nombre, apellido, edad, estadoCovid, null);
+        Paciente paciente = new Paciente(rut, nombre, apellido, edad, estadoCovid, fechaContagio);
         int registroAgregado = new PacienteDaoJDBC().insertar(paciente);
 
         System.out.println("registro insertado:" + registroAgregado);

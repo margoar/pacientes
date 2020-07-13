@@ -50,9 +50,12 @@
                                     </label>
                                 </div>
                             </div>
-                        </div>
                     </fieldset>
 
+                    <div class="form-group"> <!-- Date input -->
+                        <label class="control-label" for="date">Fecha Contagio</label>
+                        <input class="form-control" id="fechaContagio" name="fechaContagio" placeholder="DD/MM/YYYY" type="text"/>
+                    </div>
                 </div>
                 <div class="modal-footer">
                     <button class="btn btn-primary" type="submit">Guardar</button>
@@ -62,3 +65,4 @@
         </div>
     </div>
 </div>
+

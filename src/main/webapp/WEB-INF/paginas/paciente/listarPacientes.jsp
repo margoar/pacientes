@@ -9,35 +9,38 @@
                     <div class="card-header">
                         <h4>Listado Pacientes</h4>
                     </div>
-                    <table class="table table-striped">
-                        <thead class="thead-info">
-                            <tr>
-                                <th>#</th>
-                                <th>Rut</th>
-                                <th>Nombre</th>
-                                <th>Estado</th>
-                                <th>Acciones</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <c:forEach var="paciente" items="${pacientes}" varStatus="status">
-                                <tr class="${paciente.estadoCovid ? "table-danger" : "table-success"}">
-                                    <td>${status.count}</td>
-                                    <td> ${paciente.rut}</td>
-                                    <td> ${paciente.nombre} ${paciente.apellido}</td>
-                                    <td >${paciente.estadoCovid ? "Contagiado" : "Sano"}</td>
-                                    <td>
-
-                                        <a href="${pageContext.request.contextPath}/ServletControlador?accion=editar&idPaciente=${paciente.idPaciente}"
-                                           class="btn btn-secondary"> <i class="fa fa-pencil-square-o"></i> </a>
-
-                                        <a href="${pageContext.request.contextPath}/ServletControlador?accion=eliminar&idPaciente=${paciente.idPaciente}"
-                                           class="btn btn-danger"> <i class="fa fa-trash"></i> </a>
-                                    </td>
+                    <div class="table-responsive">
+                        <table class="table table-sm">
+                            <thead class="thead-info">
+                                <tr>
+                                    <th>#</th>
+                                    <th>Rut</th>
+                                    <th>Nombre</th>
+                                    <th>Estado</th>
+                                    <th>Acciones</th>
                                 </tr>
-                            </c:forEach> 
-                        </tbody>
-                    </table>
+                            </thead>
+                            <tbody>
+                                <c:forEach var="paciente" items="${pacientes}" varStatus="status">
+                                    <tr class="${paciente.estadoCovid ? "table-danger" : "table-success"}">
+                                        <td>${status.count}</td>
+                                        <td> ${paciente.rut}</td>
+                                        <td> ${paciente.nombre} ${paciente.apellido}</td>
+                                        <td >${paciente.estadoCovid ? "Contagiado" : "Sano"}</td>
+                                        <td>
+                                            <a href="${pageContext.request.contextPath}/ServletControlador?accion=editar&idPaciente=${paciente.idPaciente}"
+                                               class="btn btn-secondary"> <i class="fa fa-pencil-square-o"></i> </a>
+
+                                            <a href="${pageContext.request.contextPath}/ServletControlador?accion=eliminar&idPaciente=${paciente.idPaciente}"
+                                               class="btn btn-danger"> <i class="fa fa-trash"></i> </a>
+                                        </td>
+                                    </tr>
+                                </c:forEach> 
+                            </tbody>
+                        </table>
+
+                    </div>
+
                 </div>
 
             </div>
@@ -77,3 +80,4 @@
 
 <!--Agregar cliente modal -->
 <jsp:include page="/WEB-INF/paginas/paciente/agregarPaciente.jsp"/>
+
