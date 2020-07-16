@@ -1,4 +1,3 @@
-<!DOCTYPE html>
 <html>
     <head>
         <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -11,8 +10,8 @@
     </head>
     <body>
         <jsp:include page="/WEB-INF/paginas/comunes/cabecero.jsp"/>
-     
-            <div class="row mt-5">
+
+        <div class="row mt-5">
             <div class="col-5"></div>
             <div class="col-2">
                 <button class="btn btn-success btn-block" data-toggle="modal" data-target="#login_itech"> <i class="fas fa-sign-in-alt"> </i> Login</button>
@@ -30,19 +29,22 @@
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
-                    <div class="modal-body">
-                        <div class="form-group">
-                            <label for="exampleInputEmail1">Usuario</label>
-                            <input type="text" class="form-control" a placeholder="Ingrese nombre de usuario">
+                    <form action="${pageContext.request.contextPath}/ServletLogin?accion=login"
+                          method="POST" class="was-validated">
+                        <div class="modal-body">
+                            <div class="form-group">
+                                <label for="usuario">Usuario</label>
+                                <input type="text"  name="usuario" class="form-control" a placeholder="Ingrese nombre de usuario" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="contrasenia">Contraseña</label>
+                                <input type="password" name="contrasenia" class="form-control"  placeholder="Ingrese contraseña" required>
+                            </div>
+                            <div class="text-center" id="loader_itech_no">
+                                <button type="submit" class="btn btn-primary"> Entrar</button>
+                            </div>
                         </div>
-                        <div class="form-group">
-                            <label for="exampleInputEmail1">Contraseña</label>
-                            <input type="password" class="form-control"  placeholder="Ingrese contraseña">
-                        </div>
-                        <div class="text-center" id="loader_itech">
-                            <button type="button" class="btn btn-primary"> Entrar</button>
-                        </div>
-                    </div>
+                    </form>
                 </div>
             </div>
         </div>
@@ -51,8 +53,5 @@
         <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
         <script type="text/javascript" src="js/Login.js"></script>
-
-
     </body>
 </html>
-     

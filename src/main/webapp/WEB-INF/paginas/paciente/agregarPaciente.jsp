@@ -8,8 +8,7 @@
                     <span>&times;</span>
                 </button>
             </div>
-            <form action="${pageContext.request.contextPath}/ServletControlador?accion=agregar"
-                  method="POST" class="was-validated">
+            <form action="${pageContext.request.contextPath}/ServletControlador?accion=agregar" method="POST" class="was-validated">
 
                 <div class="modal-body">
 
