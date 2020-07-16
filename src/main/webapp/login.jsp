@@ -11,14 +11,42 @@
     <body>
         <jsp:include page="/WEB-INF/paginas/comunes/cabecero.jsp"/>
 
-        <div class="row mt-5">
-            <div class="col-5"></div>
-            <div class="col-2">
-                <button class="btn btn-success btn-block" data-toggle="modal" data-target="#login_itech"> <i class="fas fa-sign-in-alt"> </i> Login</button>
+        <div class="row d-flex justify-content-center">
 
+            <!--Grid column-->
+
+            <div class="container">
+                <div class="row">
+                    <div class="col-sm">
+
+                    </div>
+                    <div class="col-sm-2 mt-5">
+                        <button class="btn btn-success btn-block" data-toggle="modal" data-target="#login_itech"> <i class="fas fa-sign-in-alt"> </i> Login</button>
+                    </div>
+                    <div class="col-sm">
+
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-sm">
+
+                    </div>
+                    <div class="col-sm p-2">
+                        <div class="alert alert-danger alert-dismissable" style="display: ${mensaje != null ? 'block' : 'none'} ">
+                            <button type="button" class="close" data-dismiss="alert">&times;</button>
+                            <strong>¡Error!</strong> ${mensaje}
+                        </div>
+                    </div>
+                    <div class="col-sm">
+
+                    </div>
+                </div>
             </div>
-            <div class="col-5"></div>
+
         </div>
+        <!--Grid row-->
+
 
         <div class="modal animated fadeIn" id="login_itech" tabindex="-1" role="dialog">
             <div class="modal-dialog" role="document">

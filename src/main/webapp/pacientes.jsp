@@ -1,4 +1,13 @@
+<%
+    session=request.getSession(false);
+    if(session.getAttribute("name")==null)
+    {
+        response.sendRedirect("login.jsp");
+    }
+
+%> 
 <!DOCTYPE html>
+
 <html>
     <head>
         <meta charset="utf-8">

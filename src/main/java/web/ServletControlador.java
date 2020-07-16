@@ -17,37 +17,34 @@ public class ServletControlador extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-          HttpSession session = request.getSession(false);
+        HttpSession session = request.getSession(false);
 
         //recuperamos listado de pacintes
         String accion = request.getParameter("accion");
 
-        //if (session != null) {
-           String userName = (String) session.getAttribute("name");
-           session.setAttribute("userName", userName);
+//hay que ver si funciona xd    if (session != null) {
+        String userName = (String) session.getAttribute("name");
+        session.setAttribute("userName", userName);
 
-            if (accion != null) {
-                switch (accion) {
-                    case "editar":
-                        break;
-                    case "eliminar":
-                        this.eliminarCliente(request, response);
-                        break;
-                    default:
-                        this.accionDefault(request, response);
-                }
-            } else {
-
-                this.accionDefault(request, response);
+        if (accion != null) {
+            switch (accion) {
+                case "editar":
+                    break;
+                case "eliminar":
+                    this.eliminarCliente(request, response);
+                    break;
+                default:
+                    this.accionDefault(request, response);
             }
+        } else {
 
-        //} else {
+            this.accionDefault(request, response);
+        }
 
-          //  response.sendRedirect("ServletLogin");
-           // session.invalidate();
-
+        // } else {
+        //   response.sendRedirect("login.jsp");
+        // session.invalidate();
         //}
-
         //url no cambia 
         //    request.getRequestDispatcher("pacientes.jsp").forward(request, response);
     }
@@ -58,6 +55,7 @@ public class ServletControlador extends HttpServlet {
         HttpSession sesion = request.getSession();
         sesion.setAttribute("pacientes", pacientes);
         //pacientes sanos
+
         int cantSanos = cantPacientesSano(pacientes);
         sesion.setAttribute("cantPacientes", pacientes.size());
         sesion.setAttribute("cantSanos", cantSanos);
@@ -95,14 +93,17 @@ public class ServletControlador extends HttpServlet {
         String rut = request.getParameter("rut");
         int edad = Integer.parseInt(request.getParameter("edad"));
         boolean estadoCovid = Boolean.parseBoolean(request.getParameter("estadoCovid"));
-
-        String formatFecha = request.getParameter("fechaContagio");
         Date fechaContagio = null;
+        if(estadoCovid){
+          String formatFecha = request.getParameter("fechaContagio");
+
         try {
             fechaContagio = new SimpleDateFormat("dd/MM/yyyy").parse(formatFecha);
         } catch (ParseException ex) {
             ex.printStackTrace(System.out);
+        }        
         }
+        
 
         Paciente paciente = new Paciente(rut, nombre, apellido, edad, estadoCovid, fechaContagio);
         int registroAgregado = new PacienteDaoJDBC().insertar(paciente);

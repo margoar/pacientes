@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package web;
 
 
@@ -49,8 +44,10 @@ public class ServletLogin extends HttpServlet {
            response.sendRedirect("ServletControlador");
            
         } else {
-            //HttpSession session = request.getSession();
-            response.sendRedirect("ServletLogin");
+            HttpSession session = request.getSession();
+            String mensaje = "Usuario y/o contraseña invalido.";
+            session.setAttribute("mensaje", mensaje);
+            response.sendRedirect("login.jsp");
         }
 
     }
