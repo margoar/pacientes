@@ -1,4 +1,3 @@
-
 <div class="modal fade" id="agregarPacienteModal">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
@@ -8,8 +7,7 @@
                     <span>&times;</span>
                 </button>
             </div>
-            <form action="${pageContext.request.contextPath}/ServletControlador?accion=agregar"
-                  method="POST" class="was-validated">
+            <form action="${pageContext.request.contextPath}/ServletControlador?accion=agregar" method="POST" class="was-validated">
 
                 <div class="modal-body">
 
@@ -65,4 +63,5 @@
         </div>
     </div>
 </div>
+
 

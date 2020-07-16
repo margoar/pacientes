@@ -7,8 +7,6 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
@@ -19,9 +17,14 @@ public class ServletControlador extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        HttpSession session = request.getSession(false);
 
         //recuperamos listado de pacintes
         String accion = request.getParameter("accion");
+
+//hay que ver si funciona xd    if (session != null) {
+        String userName = (String) session.getAttribute("name");
+        session.setAttribute("userName", userName);
 
         if (accion != null) {
             switch (accion) {
@@ -38,6 +41,10 @@ public class ServletControlador extends HttpServlet {
             this.accionDefault(request, response);
         }
 
+        // } else {
+        //   response.sendRedirect("login.jsp");
+        // session.invalidate();
+        //}
         //url no cambia 
         //    request.getRequestDispatcher("pacientes.jsp").forward(request, response);
     }
@@ -48,6 +55,7 @@ public class ServletControlador extends HttpServlet {
         HttpSession sesion = request.getSession();
         sesion.setAttribute("pacientes", pacientes);
         //pacientes sanos
+
         int cantSanos = cantPacientesSano(pacientes);
         sesion.setAttribute("cantPacientes", pacientes.size());
         sesion.setAttribute("cantSanos", cantSanos);
@@ -85,14 +93,17 @@ public class ServletControlador extends HttpServlet {
         String rut = request.getParameter("rut");
         int edad = Integer.parseInt(request.getParameter("edad"));
         boolean estadoCovid = Boolean.parseBoolean(request.getParameter("estadoCovid"));
-        
-        String formatFecha = request.getParameter("fechaContagio");
         Date fechaContagio = null;
+        if(estadoCovid){
+          String formatFecha = request.getParameter("fechaContagio");
+
         try {
             fechaContagio = new SimpleDateFormat("dd/MM/yyyy").parse(formatFecha);
         } catch (ParseException ex) {
-           ex.printStackTrace(System.out);
+            ex.printStackTrace(System.out);
+        }        
         }
+        
 
         Paciente paciente = new Paciente(rut, nombre, apellido, edad, estadoCovid, fechaContagio);
         int registroAgregado = new PacienteDaoJDBC().insertar(paciente);
