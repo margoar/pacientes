@@ -41,7 +41,7 @@ public class ServletLogin extends HttpServlet {
         if (validaUsuario) {
            HttpSession session=request.getSession();  
            session.setAttribute("name", user);  
-           response.sendRedirect("ServletControlador");
+           response.sendRedirect("ServletPaciente");
            
         } else {
             HttpSession session = request.getSession();
