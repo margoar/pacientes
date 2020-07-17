@@ -11,8 +11,8 @@ import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
 
-@WebServlet("/ServletControlador")
-public class ServletControlador extends HttpServlet {
+@WebServlet("/ServletPaciente")
+public class ServletPaciente extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -75,7 +75,6 @@ public class ServletControlador extends HttpServlet {
                     break;
                 default:
                     this.accionDefault(request, response);
-
             }
 
         } else {
@@ -86,11 +85,12 @@ public class ServletControlador extends HttpServlet {
     }
 
     private void agregarCliente(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
         //recuperar datos del formulario
+        HttpSession sesion = request.getSession();
         String nombre = request.getParameter("nombre");
         String apellido = request.getParameter("apellido");
         String rut = request.getParameter("rut");
+
         int edad = Integer.parseInt(request.getParameter("edad"));
         boolean estadoCovid = Boolean.parseBoolean(request.getParameter("estadoCovid"));
         Date fechaContagio = null;
@@ -104,10 +104,28 @@ public class ServletControlador extends HttpServlet {
             }
         }
 
-        Paciente paciente = new Paciente(rut, nombre, apellido, edad, estadoCovid, fechaContagio);
-        int registroAgregado = new PacienteDaoJDBC().insertar(paciente);
+        if (validaPaciente(rut,nombre,apellido,edad, request)) {
+           
+            Paciente paciente = new Paciente(rut, nombre, apellido, edad, estadoCovid, fechaContagio);
+            int registroAgregado = new PacienteDaoJDBC().insertar(paciente);
 
-        System.out.println("registro insertado:" + registroAgregado);
+            System.out.println("registro insertado:" + registroAgregado);
+            this.limpiarCampos(request, response);
+            this.accionDefault(request, response);
+
+        } else {
+
+            request.getRequestDispatcher("pacientes.jsp").forward(request, response);
+        }
+
+    }
+
+    private void eliminarCliente(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        int idPaciente = Integer.parseInt(request.getParameter("idPaciente"));
+        Paciente paciente = new Paciente(idPaciente);
+
+        int registroEliminado = new PacienteDaoJDBC().eliminar(paciente);
+        System.out.println("registros eliminados" + registroEliminado);
         this.accionDefault(request, response);
     }
 
@@ -118,22 +136,72 @@ public class ServletControlador extends HttpServlet {
             if (!pac.isEstadoCovid()) {
                 cantSanos++;
                 continue inicio;
-
             }
-
         }
         System.out.println("pacientes sanos: " + cantSanos);
         return cantSanos;
     }
 
-    private void eliminarCliente(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        int idPaciente = Integer.parseInt(request.getParameter("idPaciente"));
+    public boolean validaPaciente(String rut, String nombre, String apellido, int edad, HttpServletRequest request) {
+        HttpSession sesion = request.getSession();
+        boolean validacion = false;
+        if (validarRut(rut)) {
+            sesion.setAttribute("estado", "");
+            validacion = true;
 
-        Paciente paciente = new Paciente(idPaciente);
+        } else {
+            String validaciones = "";
+            validaciones = "El rut ingresado no es valido.";
+            
+            sesion.setAttribute("rut", rut);
+            sesion.setAttribute("nombre", nombre);
+            sesion.setAttribute("apellido", apellido);
+            sesion.setAttribute("edad", edad);
+         // sesion.setAttribute("fecha", fechaContagio);
+            sesion.setAttribute("validaciones", validaciones);
+            sesion.setAttribute("estado", false);
+            
+        }
 
-        int registroEliminado = new PacienteDaoJDBC().eliminar(paciente);
-        System.out.println("registros eliminados" + registroEliminado);
-        this.accionDefault(request, response);
+        return validacion;
+    }
+
+    public static boolean validarRut(String rut) {
+
+        boolean esRutValido = false;
+        try {
+            rut = rut.toUpperCase();
+            rut = rut.replace(".", "");
+            rut = rut.replace("-", "");
+            int rutAux = Integer.parseInt(rut.substring(0, rut.length() - 1));
+
+            char dv = rut.charAt(rut.length() - 1);
+
+            int m = 0, s = 1;
+            for (; rutAux != 0; rutAux /= 10) {
+                s = (s + rutAux % 10 * (9 - m++ % 6)) % 11;
+            }
+            if (dv == (char) (s != 0 ? s + 47 : 75)) {
+                esRutValido = true;
+            }
+
+        } catch (java.lang.NumberFormatException e) {
+        } catch (Exception e) {
+            e.printStackTrace(System.out);
+        }
+        return esRutValido;
+    }
+
+    private void limpiarCampos(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        HttpSession sesion = request.getSession();
+
+        sesion.setAttribute("rut", "");
+        sesion.setAttribute("nombre", "");
+        sesion.setAttribute("apellido", "");
+        sesion.setAttribute("edad", "");
+        sesion.setAttribute("fecha", "");
+        sesion.setAttribute("validaciones", null);
 
     }
+
 }

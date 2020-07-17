@@ -28,10 +28,10 @@
                                         <td> ${paciente.nombre} ${paciente.apellido}</td>
                                         <td >${paciente.estadoCovid ? "Contagiado" : "Sano"}</td>
                                         <td>
-                                            <a href="${pageContext.request.contextPath}/ServletControlador?accion=editar&idPaciente=${paciente.idPaciente}"
+                                            <a href="${pageContext.request.contextPath}/ServletPaciente?accion=editar&idPaciente=${paciente.idPaciente}"
                                                class="btn btn-secondary"> <i class="fa fa-pencil-square-o"></i> </a>
 
-                                            <a href="${pageContext.request.contextPath}/ServletControlador?accion=eliminar&idPaciente=${paciente.idPaciente}"
+                                            <a href="${pageContext.request.contextPath}/ServletPaciente?accion=eliminar&idPaciente=${paciente.idPaciente}"
                                                class="btn btn-danger"> <i class="fa fa-trash"></i> </a>
                                         </td>
                                     </tr>
