@@ -90,7 +90,9 @@ public class ServletPaciente extends HttpServlet {
         String nombre = request.getParameter("nombre");
         String apellido = request.getParameter("apellido");
         String rut = request.getParameter("rut");
-
+        rut = rut.replaceAll("\\.", "");
+        rut = rut.replaceAll("-", "");
+                
         int edad = Integer.parseInt(request.getParameter("edad"));
         boolean estadoCovid = Boolean.parseBoolean(request.getParameter("estadoCovid"));
         Date fechaContagio = null;
@@ -104,9 +106,9 @@ public class ServletPaciente extends HttpServlet {
             }
         }
 
-        if (validaPaciente(rut,nombre,apellido,edad, request)) {
-           
-            Paciente paciente = new Paciente(rut, nombre, apellido, edad, estadoCovid, fechaContagio);
+        if (validaPaciente(rut, nombre, apellido, edad, request)) {
+
+            Paciente paciente = new Paciente(rut, nombre, apellido, edad, estadoCovid, fechaContagio != null ? fechaContagio : null);
             int registroAgregado = new PacienteDaoJDBC().insertar(paciente);
 
             System.out.println("registro insertado:" + registroAgregado);
@@ -145,22 +147,37 @@ public class ServletPaciente extends HttpServlet {
     public boolean validaPaciente(String rut, String nombre, String apellido, int edad, HttpServletRequest request) {
         HttpSession sesion = request.getSession();
         boolean validacion = false;
+        String validaciones = "";
         if (validarRut(rut)) {
-            sesion.setAttribute("estado", "");
-            validacion = true;
+            boolean existe = new PacienteDaoJDBC().buscarPacientePorRut(rut);
+            if (existe) {
+                validaciones = "El rut ingresado ya se encuentra registrado.";
+                sesion.setAttribute("rut", rut);
+                sesion.setAttribute("nombre", nombre);
+                sesion.setAttribute("apellido", apellido);
+                sesion.setAttribute("edad", edad);
+                // sesion.setAttribute("fecha", fechaContagio);
+                sesion.setAttribute("validaciones", validaciones);
+                sesion.setAttribute("estado", false);
+                validacion = false;
+
+            } else {
+                sesion.setAttribute("estado", "");
+                validacion = true;
+            }
 
         } else {
-            String validaciones = "";
+
             validaciones = "El rut ingresado no es valido.";
-            
             sesion.setAttribute("rut", rut);
             sesion.setAttribute("nombre", nombre);
             sesion.setAttribute("apellido", apellido);
             sesion.setAttribute("edad", edad);
-         // sesion.setAttribute("fecha", fechaContagio);
+            // sesion.setAttribute("fecha", fechaContagio);
             sesion.setAttribute("validaciones", validaciones);
             sesion.setAttribute("estado", false);
-            
+            validacion = false;
+
         }
 
         return validacion;

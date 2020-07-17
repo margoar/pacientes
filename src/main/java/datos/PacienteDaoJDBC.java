@@ -13,6 +13,7 @@ public class PacienteDaoJDBC {
 
     private static final String SQL_SELECT = "SELECT id_paciente,rut,nombre,apellido,edad,estadoCovid,fechaContagio FROM paciente";
     private static final String SQL_SELECT_BY_ID = "SELECT * FROM paciente";
+    private static final String SQL_SELECT_BY_RUT = "SELECT * FROM paciente WHERE rut = ?";
     private static final String SQL_INSERT = "INSERT INTO paciente (rut,nombre,apellido,edad,estadoCovid,fechaContagio) "
             + " VALUES (?,?,?,?,?,?)";
     private static final String SQL_UPDATE = "SELECT * FROM paciente";
@@ -105,5 +106,32 @@ public class PacienteDaoJDBC {
             Conexion.close(conn);
         }
         return rows;
+    }
+    
+    public boolean buscarPacientePorRut(String rut){
+     
+        Connection conn = null;
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
+        boolean esEncontrado = false;
+        
+        try {
+            conn = Conexion.getConnection();
+            stmt = conn.prepareStatement(SQL_SELECT_BY_RUT,rs.TYPE_SCROLL_SENSITIVE,rs.CONCUR_UPDATABLE);
+            stmt.setString(1, rut);
+            rs = stmt.executeQuery();
+            rs.absolute(1);
+            
+            if(rs.absolute(1)){
+            
+                esEncontrado = true;
+            }
+                          
+        } catch (SQLException e) {
+            e.printStackTrace(System.out);
+        }
+                
+        return esEncontrado;
+    
     }
 }

@@ -86,18 +86,28 @@
             language: 'es'
         };
         date_input.datepicker(options);
-
+        ///////////////////////////////////////////////////////////////////////////////////////////
         //radio button esCovid si es "No" no se debe mostrar input fecha
+        $("#div_fecha").show();
+        $("#fechaContagio").prop('required', true);
+
         $("#id_radio1").click(function () {
             $("#div_fecha").show();
+            $("#fechaContagio").prop('required', true);
+
         });
         $("#id_radio2").click(function () {
+            $("#fechaContagio").prop('required', false);
             $("#div_fecha").hide();
+
         });
+        ///////////////////////////////////////////////////////////////////////////////////////////
         //validacion si el formulario tiene informacion erronea, se abre el modal otra vez con los datos.
         if ($("#estado").val() == 'false') {
             $('#foo').trigger('click');
         }
+        //////////////////////////////////////////////////////////////////////////////////////////
+
     });
 
 
