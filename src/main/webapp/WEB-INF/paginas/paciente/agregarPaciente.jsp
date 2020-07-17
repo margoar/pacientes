@@ -36,21 +36,21 @@
                             <legend class="col-form-label col-sm-2 pt-0">¿Contagiado?</legend>
                             <div class="col-sm-10">
                                 <div class="form-check">
-                                    <input class="form-check-input" type="radio" name="estadoCovid" value="true" checked>
+                                    <input class="form-check-input" type="radio" name="estadoCovid" id="id_radio1" value="true" checked>
                                     <label class="form-check-label" for="covidTrue">
                                         Sí
                                     </label>
                                 </div>
                                 <div class="form-check">
-                                    <input class="form-check-input" type="radio" name="estadoCovid"  value="false">
+                                    <input class="form-check-input" type="radio" name="estadoCovid" id="id_radio2" value="false">
                                     <label class="form-check-label" for="covidFalse">
                                         No
                                     </label>
                                 </div>
                             </div>
                     </fieldset>
-
-                    <div class="form-group"> <!-- Date input -->
+                    <!-- Date input -->
+                    <div class="form-group" id="div_fecha">
                         <label class="control-label" for="date">Fecha Contagio</label>
                         <input class="form-control" id="fechaContagio" name="fechaContagio" placeholder="DD/MM/YYYY" type="text"/>
                     </div>
@@ -64,4 +64,39 @@
     </div>
 </div>
 
+<script>
 
+    $(document).ready(function ()
+    {
+
+        console.log("fecha");
+        //input fecha
+        var date_input = $('input[name="fechaContagio"]'); //our date input has the name "date"
+        var container = $('.bootstrap-iso form').length > 0 ? $('.bootstrap-iso form').parent() : "body";
+        var options = {
+            format: 'dd/mm/yyyy',
+            container: container,
+            todayHighlight: true,
+            autoclose: true,
+            language: 'es'
+        };
+        date_input.datepicker(options);
+
+
+//radio button si es falso no se debe mostrar feccha
+        $("#id_radio1").click(function () {
+            console.log("La edad seleccionada es: " + $(this).val());
+            $("#div_fecha").show();
+            
+        });
+
+        $("#id_radio2").click(function () {
+            console.log("La edad seleccionada es: " + $(this).val());
+            $("#div_fecha").hide();
+            
+        });
+
+    });
+
+
+</script>

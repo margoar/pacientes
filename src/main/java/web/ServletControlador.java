@@ -22,29 +22,29 @@ public class ServletControlador extends HttpServlet {
         //recuperamos listado de pacintes
         String accion = request.getParameter("accion");
 
-//hay que ver si funciona xd    if (session != null) {
-        String userName = (String) session.getAttribute("name");
-        session.setAttribute("userName", userName);
+        if (session != null) {
+            String userName = (String) session.getAttribute("name");
+            session.setAttribute("userName", userName);
 
-        if (accion != null) {
-            switch (accion) {
-                case "editar":
-                    break;
-                case "eliminar":
-                    this.eliminarCliente(request, response);
-                    break;
-                default:
-                    this.accionDefault(request, response);
+            if (accion != null) {
+                switch (accion) {
+                    case "editar":
+                        break;
+                    case "eliminar":
+                        this.eliminarCliente(request, response);
+                        break;
+                    default:
+                        this.accionDefault(request, response);
+                }
+            } else {
+
+                this.accionDefault(request, response);
             }
+
         } else {
-
-            this.accionDefault(request, response);
+            response.sendRedirect("login.jsp");
+            session.invalidate();
         }
-
-        // } else {
-        //   response.sendRedirect("login.jsp");
-        // session.invalidate();
-        //}
         //url no cambia 
         //    request.getRequestDispatcher("pacientes.jsp").forward(request, response);
     }
@@ -94,16 +94,15 @@ public class ServletControlador extends HttpServlet {
         int edad = Integer.parseInt(request.getParameter("edad"));
         boolean estadoCovid = Boolean.parseBoolean(request.getParameter("estadoCovid"));
         Date fechaContagio = null;
-        if(estadoCovid){
-          String formatFecha = request.getParameter("fechaContagio");
+        if (estadoCovid) {
+            String formatFecha = request.getParameter("fechaContagio");
 
-        try {
-            fechaContagio = new SimpleDateFormat("dd/MM/yyyy").parse(formatFecha);
-        } catch (ParseException ex) {
-            ex.printStackTrace(System.out);
-        }        
+            try {
+                fechaContagio = new SimpleDateFormat("dd/MM/yyyy").parse(formatFecha);
+            } catch (ParseException ex) {
+                ex.printStackTrace(System.out);
+            }
         }
-        
 
         Paciente paciente = new Paciente(rut, nombre, apellido, edad, estadoCovid, fechaContagio);
         int registroAgregado = new PacienteDaoJDBC().insertar(paciente);
@@ -121,9 +120,9 @@ public class ServletControlador extends HttpServlet {
                 continue inicio;
 
             }
-            System.out.println("pacientes sanos: " + cantSanos);
-        }
 
+        }
+        System.out.println("pacientes sanos: " + cantSanos);
         return cantSanos;
     }
 

@@ -70,7 +70,7 @@ public class PacienteDaoJDBC {
             stmt.setInt(4, paciente.getEdad());
             stmt.setBoolean(5, paciente.isEstadoCovid());
             java.util.Date utilDate = paciente.getFechaContagio();
-            stmt.setDate(6,  new java.sql.Date(utilDate.getTime()));
+            stmt.setDate(6,  paciente.isEstadoCovid() ? new java.sql.Date(utilDate.getTime()) : null);
             rows = stmt.executeUpdate();
 
         } catch (SQLException ex) {
