@@ -8,7 +8,6 @@
                 </button>
             </div>
             <form action="${pageContext.request.contextPath}/ServletPaciente?accion=agregar" method="POST" class="was-validated">
-
                 <div class="modal-body">
                     <div class="col-sm p-2">
                         <div class="alert alert-danger alert-dismissable" style="display: ${validaciones != null ? 'block' : 'none'} ">
@@ -34,7 +33,6 @@
                         <label for="edad">Edad</label>
                         <input type="number" class="form-control" name="edad" placeholder="Ej: 32" value="${edad}" required>
                     </div>
-
 
                     <fieldset class="form-group">
                         <div class="row">

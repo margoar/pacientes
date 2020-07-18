@@ -29,9 +29,10 @@ public class ServletPaciente extends HttpServlet {
             if (accion != null) {
                 switch (accion) {
                     case "editar":
+                        this.editarPaciente(request, response);
                         break;
                     case "eliminar":
-                        this.eliminarCliente(request, response);
+                        this.eliminarPaciente(request, response);
                         break;
                     default:
                         this.accionDefault(request, response);
@@ -71,8 +72,10 @@ public class ServletPaciente extends HttpServlet {
 
             switch (accion) {
                 case "agregar":
-                    this.agregarCliente(request, response);
+                    this.agregarPaciente(request, response);
                     break;
+                case "modificar":
+                    this.modificarPaciente(request,response);
                 default:
                     this.accionDefault(request, response);
             }
@@ -84,7 +87,7 @@ public class ServletPaciente extends HttpServlet {
 
     }
 
-    private void agregarCliente(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    private void agregarPaciente(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         //recuperar datos del formulario
         HttpSession sesion = request.getSession();
         String nombre = request.getParameter("nombre");
@@ -92,7 +95,7 @@ public class ServletPaciente extends HttpServlet {
         String rut = request.getParameter("rut");
         rut = rut.replaceAll("\\.", "");
         rut = rut.replaceAll("-", "");
-                
+
         int edad = Integer.parseInt(request.getParameter("edad"));
         boolean estadoCovid = Boolean.parseBoolean(request.getParameter("estadoCovid"));
         Date fechaContagio = null;
@@ -122,7 +125,7 @@ public class ServletPaciente extends HttpServlet {
 
     }
 
-    private void eliminarCliente(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    private void eliminarPaciente(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         int idPaciente = Integer.parseInt(request.getParameter("idPaciente"));
         Paciente paciente = new Paciente(idPaciente);
 
@@ -211,14 +214,51 @@ public class ServletPaciente extends HttpServlet {
 
     private void limpiarCampos(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession sesion = request.getSession();
-
         sesion.setAttribute("rut", "");
         sesion.setAttribute("nombre", "");
         sesion.setAttribute("apellido", "");
         sesion.setAttribute("edad", "");
         sesion.setAttribute("fecha", "");
         sesion.setAttribute("validaciones", null);
+    }
+
+    private void editarPaciente(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        int idPaciente = Integer.parseInt(request.getParameter("idPaciente"));
+        //recuperamos el objero cliente de la base de datos.
+        Paciente paciente = new PacienteDaoJDBC().encontrar(new Paciente(idPaciente));
+
+        request.setAttribute("paciente", paciente);
+        String jspEditar = "/WEB-INF/paginas/paciente/editarPaciente.jsp";
+        request.getRequestDispatcher(jspEditar).forward(request, response);
 
     }
 
+    private void modificarPaciente(HttpServletRequest request, HttpServletResponse response)  throws ServletException, IOException{
+               //recupetamos los elementos del formulario agregar paciente
+        int idPaciente = Integer.parseInt(request.getParameter("idPaciente"));
+        String rut = request.getParameter("rut");
+        String nombre = request.getParameter("nombre");
+        String apellido = request.getParameter("apellido");
+        int edad = Integer.parseInt(request.getParameter("edad"));
+        boolean estadoCovid = Boolean.parseBoolean(request.getParameter("estadoCovid"));
+        Date fechaContagio = null;
+        if (estadoCovid) {
+            String formatFecha = request.getParameter("fechaContagio");
+
+            try {
+                fechaContagio = new SimpleDateFormat("dd/MM/yyyy").parse(formatFecha);
+            } catch (ParseException ex) {
+                ex.printStackTrace(System.out);
+            }
+        }
+
+        //creamos el objeto de cliente(modelo
+        Paciente cliente = new Paciente(idPaciente,rut,nombre, apellido, edad, estadoCovid, fechaContagio);
+        //modificamos el objeto en la base de datos
+        int registrosModificados = new PacienteDaoJDBC().actualizar(cliente);
+        System.out.println("registro : " + registrosModificados);
+
+        //redirigimos a la accion por default
+        this.accionDefault(request, response);
+    }
 }
