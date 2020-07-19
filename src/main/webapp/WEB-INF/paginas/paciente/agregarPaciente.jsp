@@ -8,7 +8,6 @@
                 </button>
             </div>
             <form action="${pageContext.request.contextPath}/ServletPaciente?accion=agregar" method="POST" class="was-validated">
-
                 <div class="modal-body">
                     <div class="col-sm p-2">
                         <div class="alert alert-danger alert-dismissable" style="display: ${validaciones != null ? 'block' : 'none'} ">
@@ -34,7 +33,6 @@
                         <label for="edad">Edad</label>
                         <input type="number" class="form-control" name="edad" placeholder="Ej: 32" value="${edad}" required>
                     </div>
-
 
                     <fieldset class="form-group">
                         <div class="row">
@@ -69,46 +67,3 @@
         </div>
     </div>
 </div>
-
-<script>
-
-    $(document).ready(function ()
-    {
-        console.log("fecha");
-        //input fecha
-        var date_input = $('input[name="fechaContagio"]'); //our date input has the name "date"
-        var container = $('.bootstrap-iso form').length > 0 ? $('.bootstrap-iso form').parent() : "body";
-        var options = {
-            format: 'dd/mm/yyyy',
-            container: container,
-            todayHighlight: true,
-            autoclose: true,
-            language: 'es'
-        };
-        date_input.datepicker(options);
-        ///////////////////////////////////////////////////////////////////////////////////////////
-        //radio button esCovid si es "No" no se debe mostrar input fecha
-        $("#div_fecha").show();
-        $("#fechaContagio").prop('required', true);
-
-        $("#id_radio1").click(function () {
-            $("#div_fecha").show();
-            $("#fechaContagio").prop('required', true);
-
-        });
-        $("#id_radio2").click(function () {
-            $("#fechaContagio").prop('required', false);
-            $("#div_fecha").hide();
-
-        });
-        ///////////////////////////////////////////////////////////////////////////////////////////
-        //validacion si el formulario tiene informacion erronea, se abre el modal otra vez con los datos.
-        if ($("#estado").val() == 'false') {
-            $('#foo').trigger('click');
-        }
-        //////////////////////////////////////////////////////////////////////////////////////////
-
-    });
-
-
-</script>
