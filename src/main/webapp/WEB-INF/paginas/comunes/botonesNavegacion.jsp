@@ -7,11 +7,10 @@
             </div>
             
            <div class="col-md-3">
-                <a href="#" class="btn btn-success btn-block">
+                <a href="${pageContext.request.contextPath}/ServletDescargaExcel" class="btn btn-success btn-block">
                     <i class="file-download"> </i> Descarga Excel
                 </a>
-            </div>
-           
+            </div>           
         </div>
     </div> 
 </section>
