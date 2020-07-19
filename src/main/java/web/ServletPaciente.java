@@ -76,6 +76,7 @@ public class ServletPaciente extends HttpServlet {
                     break;
                 case "modificar":
                     this.modificarPaciente(request,response);
+                    break;
                 default:
                     this.accionDefault(request, response);
             }
@@ -241,6 +242,7 @@ public class ServletPaciente extends HttpServlet {
         String apellido = request.getParameter("apellido");
         int edad = Integer.parseInt(request.getParameter("edad"));
         boolean estadoCovid = Boolean.parseBoolean(request.getParameter("estadoCovid"));
+               
         Date fechaContagio = null;
         if (estadoCovid) {
             String formatFecha = request.getParameter("fechaContagio");

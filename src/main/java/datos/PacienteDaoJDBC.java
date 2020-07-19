@@ -17,7 +17,7 @@ public class PacienteDaoJDBC {
     private static final String SQL_INSERT = "INSERT INTO paciente (rut,nombre,apellido,edad,estadoCovid,fechaContagio) "
             + " VALUES (?,?,?,?,?,?)";
     private static final String SQL_UPDATE = "UPDATE paciente "
-            + " SET  nombre = ?, apellido = ?,edad= ?, estadoCovid= ?,fechaContagio=? WHERE id_paciente = ?";
+            + " SET nombre = ?, apellido = ?,edad= ?, estadoCovid= ?,fechaContagio=? WHERE id_paciente = ?";
     private static final String SQL_DELETE = "DELETE FROM paciente WHERE id_paciente = ?";
 
     public List<Paciente> listar() {
