@@ -24,7 +24,7 @@ public class ServletDescargaExcel extends HttpServlet {
         String fechActual = new SimpleDateFormat("dd-MM-yyyy").format(fechaActual);
 
         response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
-        response.setHeader("Content-Disposition", "attachment; filename=listado_pacientes_"+fechActual+".xlsx");
+        response.setHeader("Content-Disposition", "attachment; filename=listado_pacientes_"+fechActual+".xls");
 
         HSSFWorkbook libro = new HSSFWorkbook();
         HSSFSheet hoja = libro.createSheet();
